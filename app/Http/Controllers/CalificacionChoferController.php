@@ -26,16 +26,15 @@ class CalificacionChoferController extends Controller
             'mejoras'        => 'required|string',
             'comentario'     => 'required|string',
         ]);
-        //  OBTENER EL USUARIO CORRECTO DE LA TABLA 'usuarios'
+        //  OBTENER EL USUARIO CORRECTO DE LA TABLA 'users'
         $user = auth()->user();
-        $usuario = \App\Models\Usuario::where('email', $user->email)->first();
 
-        if (!$usuario) {
+        if (!$user) {
             return back()->withErrors(['error' => 'No se encontró tu perfil de usuario.']);
         }
         // Guardamos en la base de datos
         \App\Models\ComentarioConductor::create([
-            'usuario_id'     => $usuario->id,
+            'usuario_id'     => $user->id,
             'empleado_id'    => $empleadoId,
             'calificacion'   => $request->calificacion,
             'velocidad'      => $request->velocidad,

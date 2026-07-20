@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Usuario;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -13,7 +13,7 @@ class RegistroUsuarioController extends Controller
     {
         $search = $request->input('search');
 
-        $usuarios = Usuario::query()
+        $usuarios = User::query()
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
@@ -63,7 +63,7 @@ class RegistroUsuarioController extends Controller
         ]);
 
         // Guardar en tabla users directamente
-        $usuario = new Usuario();
+        $usuario = new User();
         $usuario->name = $request->nombre_completo;
         $usuario->nombre_completo = $request->nombre_completo;
         $usuario->dni = $request->dni;
@@ -82,7 +82,7 @@ class RegistroUsuarioController extends Controller
 
     public function show(string $id)
     {
-        $usuario = Usuario::findOrFail($id);
+        $usuario = User::findOrFail($id);
         return view('usuarios.show', compact('usuario'));
     }
 
@@ -90,7 +90,7 @@ class RegistroUsuarioController extends Controller
     {
         $search = $request->input('search');
 
-        $usuarios = Usuario::query()
+        $usuarios = User::query()
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
@@ -124,13 +124,13 @@ class RegistroUsuarioController extends Controller
 
     public function edit(string $id)
     {
-        $usuario = Usuario::findOrFail($id);
+        $usuario = User::findOrFail($id);
         return view('usuarios.Editar', compact('usuario'));
     }
 
     public function update(Request $request, $id)
     {
-        $usuario = Usuario::findOrFail($id);
+        $usuario = User::findOrFail($id);
 
         $request->validate([
             'nombre_completo' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
